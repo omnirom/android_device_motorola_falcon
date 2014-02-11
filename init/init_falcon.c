@@ -92,6 +92,7 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
             property_set("persist.radio.multisim.config", "");
             property_set("ro.mot.build.customerid", "sprint");
         }
+        property_set("ro.telephony.default_network", "4");
         property_set("ro.telephony.gsm-routes-us-smsc", "1");
         property_set("persist.radio.vrte_logic", "2");
         property_set("persist.radio.0x9e_not_callname", "1");
