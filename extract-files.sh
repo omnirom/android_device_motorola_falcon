@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/sh
+
+set -e
 
 export VENDOR=motorola
 export DEVICE=falcon
-
-../msm8226-common/extract-files.sh $@
+./../../$VENDOR/msm8226-common/extract-files.sh $@
