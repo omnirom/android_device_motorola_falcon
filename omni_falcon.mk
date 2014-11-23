@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2014 The CyanogenMod Project
+# Copyright (C) 2013 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,15 +14,30 @@
 # limitations under the License.
 #
 
+#
+# This file is the build configuration for a full Android
+# build for falcon hardware. This cleanly combines a set of
+# device-specific aspects (drivers) with a device-agnostic
+# product configuration (apps). Except for a few implementation
+# details, it only fundamentally contains two inherit-product
+# lines, full and falcon, hence its name.
+#
+
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
-# Inherit from falcon device
-$(call inherit-product, device/motorola/falcon/device.mk)
+# Inherit from our omni product configuration
+$(call inherit-product, vendor/omni/config/common.mk)
 
-# Device identifier. This must come after all inclusions
+# Pull in GSM-specific stuff such as APNs
+$(call inherit-product, vendor/omni/config/gsm.mk)
+
+# Inherit from falcon device
+$(call inherit-product, device/motorola/falcon/device_falcon.mk)
+
+## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := falcon
-PRODUCT_NAME := full_falcon
+PRODUCT_NAME := omni_falcon
 PRODUCT_BRAND := motorola
 PRODUCT_MODEL := falcon
 PRODUCT_MANUFACTURER := motorola

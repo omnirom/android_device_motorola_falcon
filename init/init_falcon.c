@@ -45,6 +45,7 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
     char devicename[PROP_VALUE_MAX];
     char cdma_variant[92];
     char fstype[92];
+
     FILE *fp;
     int rc;
 
@@ -56,10 +57,6 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
     if (!rc || !ISMATCH(platform, ANDROID_TARGET))
         return;
 
-    property_get("ro.boot.radio", radio);
-    fp = popen("/system/bin/ls -la /fsg/falcon_3.img.gz | /system/xbin/cut -d '_' -f3", "r");
-    fgets(cdma_variant, sizeof(cdma_variant), fp);
-    pclose(fp);
     fp = popen("/system/bin/blkid /dev/block/platform/msm_sdcc.1/by-name/userdata | /system/xbin/cut -d ' ' -f3", "r");
     fgets(fstype, sizeof(fstype), fp);
     pclose(fp);
@@ -82,9 +79,7 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
         property_set("ro.telephony.default_network", "0");
         property_set("persist.radio.multisim.config", "");
     } else if (ISMATCH(radio, "0x3")) {
-        /* cdma */
-        INFO("CDMA variant=%s", cdma_variant);
-        if (ISMATCH(cdma_variant, "verizon")) {
+        
             /* xt1028 */
             property_set("ro.product.device", "falcon_cdma");
             property_set("ro.product.model", "Moto G");
@@ -97,27 +92,6 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
             property_set("ro.com.google.clientidbase.ms", "android-verizon");
             property_set("ro.com.google.clientidbase.am", "android-verizon");
             property_set("ro.com.google.clientidbase.yt", "android-verizon");
-        } else {
-            /* xt1031 */
-            property_set("ro.product.device", "falcon_cdma");
-            property_set("ro.product.model", "Moto G");
-            property_set("ro.build.description", "falcon_boost-user 4.4.2 KXB20.9-1.10-1.18 18 release-keys");
-            property_set("ro.build.fingerprint", "motorola/falcon_boost/falcon_cdma:4.4.2/KXB20.9-1.10-1.18/18:user/release-keys");
-            property_set("persist.radio.multisim.config", "");
-            property_set("ro.mot.build.customerid", "sprint");
-            property_set("ro.cdma.home.operator.alpha", "Boost Mobile");
-            property_set("ro.cdma.home.operator.numeric", "311870");
-        }
-        property_set("ro.telephony.default_network", "4");
-        property_set("ro.telephony.gsm-routes-us-smsc", "1");
-        property_set("persist.radio.vrte_logic", "2");
-        property_set("persist.radio.0x9e_not_callname", "1");
-        property_set("persist.radio.skip_data_check", "1");
-        property_set("persist.ril.max.crit.qmi.fails", "4");
-        property_set("ro.cdma.home.operator.isnan", "1");
-        property_set("ro.cdma.otaspnumschema", "SELC,1,80,99");
-        property_set("ro.cdma.data_retry_config", "max_retries=infinite,0,0,10000,10000,100000,10000,10000,10000,10000,140000,540000,960000");
-        property_set("ro.gsm.data_retry_config", "default_randomization=2000,max_retries=infinite,1000,1000,80000,125000,485000,905000");
     } else if (ISMATCH(radio, "0x5")) {
         /* xt1033 */
         property_set("ro.product.device", "falcon_umtsds");

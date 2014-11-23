@@ -29,5 +29,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_wlan_nv.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv.bin
 
+# CDMA, GSM/WCDMA
+PRODUCT_PROPERTY_OVERRIDES += \
+	persist.radio.mode_pref_nv10=1 \
+	persist.radio.no_wait_for_card=1 \
+	persist.radio.dfr_mode_set=1
+
 # Inherit from msm8226-common
 $(call inherit-product, device/motorola/msm8226-common/msm8226.mk)
