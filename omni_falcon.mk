@@ -17,12 +17,18 @@
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
+# Inherit from our omni product configuration
+$(call inherit-product, vendor/omni/config/common.mk)
+
+# Pull in GSM-specific stuff such as APNs
+$(call inherit-product, vendor/omni/config/gsm.mk)
+
 # Inherit from falcon device
 $(call inherit-product, device/motorola/falcon/device.mk)
 
 # Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := falcon
-PRODUCT_NAME := full_falcon
+PRODUCT_NAME := omni_falcon
 PRODUCT_BRAND := motorola
 PRODUCT_MODEL := falcon
 PRODUCT_MANUFACTURER := motorola
